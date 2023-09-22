@@ -47,7 +47,7 @@ function Layout({ title, description, children }) {
               fontSize:"20px"
             }}
           >
-           Vintage
+           Shophouse
           </Typography>
           
           <Box component="span" sx={{ flex: 1 }} />
