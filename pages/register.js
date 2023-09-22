@@ -27,10 +27,9 @@ function Register() {
     },[])
     
         const submitHandler = async ({name,email , password,confirmPassword }) =>{
-            // e.preventDefault();
+           
             closeSnackbar();
-            // alert("event handler workder")
-            //  console.log(name,email,password,confirmPassword)
+         
             if(password !== confirmPassword){
                 window.alert("passwords don't match");
                 return;
@@ -43,7 +42,7 @@ function Register() {
                   email,
                   password,
                 });
-                // console.log(data)
+                
                 dispatch({ type: 'USER_LOGIN', payload: data});
                 Cookies.set('userInfo',JSON.stringify(data));
                 router.push('/');

@@ -1,15 +1,17 @@
 "use client";
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Head from "next/head";
 import {
   AppBar,
   Typography,
   Toolbar,
-  Badge,
   Button,
   Container,
   IconButton,
   Box,
+  Badge,
+  Stack,
+  Avatar,
 } from "@mui/material";
 import { Store } from "../utils/store";
 import Cookies from "js-cookie";
@@ -20,6 +22,7 @@ import { useRouter } from "next/router";
 function Layout({ title, description, children }) {
   const { state, dispatch } = useContext(Store);
   const { cart, userInfo } = state;
+  const {user, setUserName} = useState()
   const router = useRouter(); 
   const logOut = () => {
     dispatch({ type: "USER_LOGOUT" });
@@ -28,14 +31,15 @@ function Layout({ title, description, children }) {
     Cookies.remove("shippingAddress");
   };
 
+
   return (
     <>
 
       <Head>
-        <title>{title ? `${title} - Mysite` : "MySite"}</title>
+        <title>{title ? `${title} - ShopHouse` : "ShopHouse"}</title>
         {description && <meta name="description" content={description} />}
       </Head>
-      <AppBar position="static" sx={{ boxShadow: "none" }}>
+      <AppBar position="static" sx={{ boxShadow: "none" ,padding:"20px",background:"#fff"}}>
         <Toolbar sx={{ background: "#fff", gap: "15px" }}>
           <Typography
             component={Link}
@@ -44,29 +48,45 @@ function Layout({ title, description, children }) {
               paddingRight: "20px",
               textDecoration: "none",
               fontWeight: "800",
-              fontSize:"20px"
+              fontSize:"20px",
+              color:"#000",
+              '&:hover':{
+                color:"#C7C7C7"
+              }
             }}
           >
-           Shophouse
+           ShopHouse
           </Typography>
           
           <Box component="span" sx={{ flex: 1 }} />
-            <Badge color="secondary" badgeContent={cart?.cartItems.length}>
-          <IconButton onClick={()=>{router.push('/carts')}}>
+          <IconButton onClick={()=>{router.push('/carts')}} sx={{position:"relative"}}>
+            
+            <Box component={"div"} sx={{position:"absolute",top:0,right:0,fontSize:"11px",fontWeight:"700"}}>{(cart?.cartItems.length > 0)? cart?.cartItems.length :""}</Box>
+
               <ShoppingCartOutlinedIcon />
+         
+         
           </IconButton>
-            </Badge>
+        
 
           {userInfo ? (
+            <Stack direction={"row"} gap={2}>
+              <Avatar>
+                {userInfo.name[0]}
+              </Avatar>
             <Button onClick={logOut} variant="contained">
               Log out
             </Button>
+            </Stack>
           ) : ( 
-              <Button onClick={()=>{router.push('/LogIn')}} variant="contained">Log in</Button>
+              <Button
+              variant="text"
+              sx={{fontWeight:"700",}}
+              onClick={()=>{router.push('/LogIn')}} >Log in</Button>
          )}
         </Toolbar>
       </AppBar>
-      <Container>{children}</Container>
+      <Container maxWidth="xl">{children}</Container>
     </>
   );
 }

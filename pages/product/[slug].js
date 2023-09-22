@@ -2,8 +2,7 @@ import React,{useContext} from 'react'
 import {useRouter} from "next/router"
 // import data from '../../utils/data';
 import Layout from '../../components/Layout';
-import { Typography ,Grid, List, ListItem, Button } from '@mui/material';
-import Image from 'next/image';
+import { Typography ,Grid, List, ListItem, Button, Box, Stack } from '@mui/material';
 import dbConnect from '../../utils/db';
 import Product from '../../model/Product';
 import axios from 'axios';
@@ -30,7 +29,7 @@ function ProductScreen(props) {
       console.log(ss)
  
          
-         if(data.countInStock <=quantity){
+         if(data.countInStock <= quantity){
         window.alert('Sorry. product is out of stock');
         return;
       }
@@ -46,48 +45,50 @@ function ProductScreen(props) {
         
         </div>
         <Grid container spacing={2}>
-            <Grid item md ={6}>
-                <Image src={product.image} alt={product.name} width={640} height={640}></Image>
+            <Grid item lg={6} md={6} sm={12} xs={12}>
+              <Box sx={{minHeight:"100vh"}}>
+                <Box component={"img"} src={product.image} sx={{width:"100%"}} alt={product.name}/>
+              </Box>
             </Grid>
-            <Grid item md={3} xs={12} >
-                <List>
-                    <ListItem>
+            <Grid item lg={6} md={6} sm={12} xs={12} >
+                <Stack gap={1}>
+                  
                       <Typography component="h1" sx={{fontSize:"30px",fontWeight:"bold"}}>{product.name}</Typography>
-                    </ListItem>
-                    <ListItem>
-                      <Typography component="h2">{product.description}</Typography>
-                    </ListItem>
-                    <ListItem>
-                      <Typography component="h2"> category : {product.category}</Typography>
-                    </ListItem>
-                    <ListItem>
-                      <Typography component="h2">bard : {product.brand}</Typography>
-                    </ListItem>
-                    <ListItem>
-                      <Typography component="h2" sx={{fontSize:"20px",fontWeight:"bold"}}>{product.price} Rs/-</Typography>
-                    </ListItem>
-                  <ListItem>
-                    <Grid container>
-                        <Grid item xs={6}>
-                            <Typography>Status :- </Typography>
-                        </Grid>
-                        <Grid item xs={6}>
-                            <Typography>
-                              {product.countInStock > 0 ? `In Stock` : `Unavilable`}
+                   
+                      <Typography component="h2" >{product.description}</Typography>
+                  
+                      <Typography component="h2" sx={{color:"#A4A4A4"}}> category :<span style={{color:"#000",fontWeight:"bold"}}> {product.category} </span> </Typography>
+                  
+                      <Typography component="h2"  sx={{color:"#A4A4A4"}}>bard :<span style={{color:"#000",fontWeight:"bold"}}> {product.brand} </span></Typography>
+          
+                      <Typography component="h2" sx={{fontSize:"20px",fontWeight:"bold"}}><span style={{color:"#A4A4A4"}}>Price :</span> {product.price} Rs/-</Typography>
+                  
+                  
+                    <Stack direction={"flex"} gap={2}>
+                    
+                            <Typography sx={{color:"#A4A4A4"}} >Status : </Typography>
+                            {product.countInStock > 0 ?
+                            <Typography sx={{fontWeight:"700",color:"green"}} >
+                               In Stock 
+                               
+                            </Typography>:
+                            <Typography sx={{fontWeight:"700",color:"red"}} >
+                               Unavilable
+                               
                             </Typography>
-                        </Grid>
-                    </Grid>
-                  </ListItem>
-                    <ListItem>
+                               }
+                       
+                    </Stack>
+               
                       <Button
+                      variant='contained'
+                      sx={{fontWeight:"700"}}
                       onClick = {addToCartHandler}
                       >Add to Cart</Button>
-                    </ListItem>
-                </List>
+                    
+                </Stack>
             </Grid>
-            <Grid item xs={6}>
-                
-            </Grid>
+         
 
             
         </Grid>
